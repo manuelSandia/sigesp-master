@@ -1,0 +1,80 @@
+-- View: contableaportes_contable
+
+-- DROP VIEW contableaportes_contable;
+
+CREATE OR REPLACE VIEW contableaportes_contable AS 
+         select spg_cuentas.sc_cuenta AS cuenta,
+max(spg_cuentas.spg_cuenta) AS denoconta,'D' AS operacion, 
+sum (sno_salida.valsal)  AS total, sno_salida.codemp, sno_salida.codnom, sno_salida.codperi
+from spg_cuentas,scg_cuentas,sno_concepto,sno_salida,sno_personalnomina,sno_unidadadmin,sno_conceptopersonal
+where spg_cuentas.sc_cuenta::bpchar = scg_cuentas.sc_cuenta::bpchar  and
+sno_concepto.codconc=sno_salida.codconc
+and sno_concepto.sigcon='P' and sno_salida.valsal!='0'
+and sno_concepto.cueprepatcon= spg_cuentas.spg_cuenta
+and sno_concepto.codconc=sno_conceptopersonal.codconc
+and sno_concepto.codnom=sno_conceptopersonal.codnom
+and sno_concepto.codemp=sno_conceptopersonal.codemp
+and sno_salida.codper=sno_conceptopersonal.codper
+and sno_salida.codemp=sno_conceptopersonal.codemp
+and sno_salida.codnom=sno_conceptopersonal.codnom
+and sno_salida.codconc=sno_conceptopersonal.codconc
+and sno_personalnomina.codper=sno_conceptopersonal.codper
+and sno_personalnomina.codemp=sno_conceptopersonal.codemp
+and sno_personalnomina.codnom=sno_conceptopersonal.codnom
+
+and sno_personalnomina.minorguniadm=sno_unidadadmin.minorguniadm
+and sno_personalnomina.ofiuniadm=sno_unidadadmin.ofiuniadm
+and sno_personalnomina.uniuniadm=sno_unidadadmin.uniuniadm
+and sno_personalnomina.depuniadm=sno_unidadadmin.depuniadm
+and sno_personalnomina.prouniadm=sno_unidadadmin.prouniadm
+and sno_unidadadmin.codestpro1=spg_cuentas.codestpro1
+and sno_unidadadmin.codestpro2=spg_cuentas.codestpro2
+and sno_unidadadmin.codestpro3=spg_cuentas.codestpro3
+and sno_unidadadmin.codestpro4=spg_cuentas.codestpro4
+and sno_unidadadmin.codestpro5=spg_cuentas.codestpro5
+and sno_salida.valsal <> 0::double precision 
+          AND (sno_salida.tipsal = 'P2'::bpchar 
+          OR sno_salida.tipsal = 'V4'::bpchar 
+          OR sno_salida.tipsal = 'W4'::bpchar) 
+          AND sno_concepto.intprocon::text = '0'::text 
+          AND spg_cuentas.status::text = 'C'::text 
+GROUP BY spg_cuentas.sc_cuenta, sno_salida.codemp, sno_salida.codnom, sno_salida.codperi
+UNION 
+         select spg_cuentas.sc_cuenta AS cuenta,
+max(spg_cuentas.spg_cuenta) AS denoconta,'D' AS operacion, 
+sum (sno_salida.valsal)  AS total, sno_salida.codemp, sno_salida.codnom, sno_salida.codperi
+from spg_cuentas,scg_cuentas,sno_concepto,sno_salida,sno_personalnomina,sno_unidadadmin,sno_conceptopersonal
+where spg_cuentas.sc_cuenta::bpchar = scg_cuentas.sc_cuenta::bpchar  and
+sno_concepto.codconc=sno_salida.codconc
+and sno_concepto.sigcon!='P' and sno_salida.valsal!='0'
+and sno_concepto.cueprepatcon= spg_cuentas.spg_cuenta
+and sno_concepto.codconc=sno_conceptopersonal.codconc
+and sno_concepto.codnom=sno_conceptopersonal.codnom
+and sno_concepto.codemp=sno_conceptopersonal.codemp
+and sno_salida.codper=sno_conceptopersonal.codper
+and sno_salida.codemp=sno_conceptopersonal.codemp
+and sno_salida.codnom=sno_conceptopersonal.codnom
+and sno_salida.codconc=sno_conceptopersonal.codconc
+and sno_personalnomina.codper=sno_conceptopersonal.codper
+and sno_personalnomina.codemp=sno_conceptopersonal.codemp
+and sno_personalnomina.codnom=sno_conceptopersonal.codnom
+
+and sno_personalnomina.minorguniadm=sno_unidadadmin.minorguniadm
+and sno_personalnomina.ofiuniadm=sno_unidadadmin.ofiuniadm
+and sno_personalnomina.uniuniadm=sno_unidadadmin.uniuniadm
+and sno_personalnomina.depuniadm=sno_unidadadmin.depuniadm
+and sno_personalnomina.prouniadm=sno_unidadadmin.prouniadm
+and sno_unidadadmin.codestpro1=spg_cuentas.codestpro1
+and sno_unidadadmin.codestpro2=spg_cuentas.codestpro2
+and sno_unidadadmin.codestpro3=spg_cuentas.codestpro3
+and sno_unidadadmin.codestpro4=spg_cuentas.codestpro4
+and sno_unidadadmin.codestpro5=spg_cuentas.codestpro5
+and sno_salida.valsal <> 0::double precision 
+          AND (sno_salida.tipsal = 'P2'::bpchar 
+          OR sno_salida.tipsal = 'V4'::bpchar 
+          OR sno_salida.tipsal = 'W4'::bpchar) 
+          AND sno_concepto.intprocon::text = '1'::text 
+          AND spg_cuentas.status::text = 'C'::text 
+GROUP BY spg_cuentas.sc_cuenta, sno_salida.codemp, sno_salida.codnom, sno_salida.codperi;
+
+ALTER TABLE contableaportes_contable OWNER TO postgres

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conexiones>
+  <conexion>
+      <servidor>localhost</servidor>
+      <puerto>5432</puerto>
+      <basedatos>db_2014</basedatos>
+      <nombre>Cnti 2014</nombre>
+      <login>postgres</login>
+      <password>adminsigesp</password>
+      <gestor>POSTGRES</gestor>
+  </conexion> 
+
+</conexiones>

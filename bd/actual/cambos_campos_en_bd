@@ -1,0 +1,25 @@
+/***********aumento campo codigo profesion a 4 digitos *****************/
+ALTER TABLE sno_personal ALTER codpro TYPE character(4);
+ALTER TABLE sno_profesion ALTER codpro TYPE character(4);
+ALTER TABLE srh_concursante ALTER codpro TYPE character(4);
+ALTER TABLE srh_contratos  ALTER codpro TYPE character(4);
+ALTER TABLE srh_solicitud_empleo  ALTER codpro TYPE character(4);
+ALTER TABLE sob_propietario ALTER codpro TYPE character(4);
+ALTER TABLE sob_obra ALTER codpro TYPE character(4);
+
+/***************fin************************/
+
+
+/***campo justificacion**/
+
+ALTER TABLE cxp_sol_dc ADD COLUMN justapro text;
+ALTER TABLE cxp_solicitudes ADD COLUMN justapro text;
+ALTER TABLE scv_solicitudviatico ADD COLUMN justapro text;
+ALTER TABLE sep_solicitud ADD COLUMN justapro text;
+ALTER TABLE soc_analisicotizacion ADD COLUMN justapro text;
+ALTER TABLE soc_ordencompra ADD COLUMN justapro text;
+ALTER TABLE cxp_rd ADD COLUMN justapro text;
+
+/***************fin************************/
+
+
